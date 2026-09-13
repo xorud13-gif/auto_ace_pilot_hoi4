@@ -1,0 +1,81 @@
+ace_auto_assign_category = {
+
+	# 1. 즉시 에이스 자동 배치 (1회성)
+	ace_assign_once = {
+		icon = generic_air
+		cost = 0
+		fire_only_once = no
+		days_re_enable = 0
+
+		visible = {
+			is_ai = no
+		}
+
+		available = {
+			always = yes
+		}
+
+		complete_effect = {
+			log = "ACE_AUTO_ASSIGN:TRIGGER"
+			custom_effect_tooltip = ace_assign_once_tt
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	# 2. 에이스 주기적 자동 배치 비활성화 (기본 ON 상태이므로 이것이 먼저 노출됨)
+	ace_assign_disable = {
+		icon = generic_air
+		cost = 0
+		fire_only_once = no
+		days_re_enable = 0
+
+		visible = {
+			is_ai = no
+			NOT = { has_country_flag = ace_auto_assign_disabled }
+		}
+
+		available = {
+			always = yes
+		}
+
+		complete_effect = {
+			set_country_flag = ace_auto_assign_disabled
+			log = "ACE_AUTO_ASSIGN:DISABLE"
+			custom_effect_tooltip = ace_assign_disable_tt
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	# 3. 에이스 주기적 자동 배치 활성화 (비활성화 상태일 때 노출됨)
+	ace_assign_enable = {
+		icon = generic_air
+		cost = 0
+		fire_only_once = no
+		days_re_enable = 0
+
+		visible = {
+			is_ai = no
+			has_country_flag = ace_auto_assign_disabled
+		}
+
+		available = {
+			always = yes
+		}
+
+		complete_effect = {
+			clr_country_flag = ace_auto_assign_disabled
+			log = "ACE_AUTO_ASSIGN:ENABLE"
+			custom_effect_tooltip = ace_assign_enable_tt
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}

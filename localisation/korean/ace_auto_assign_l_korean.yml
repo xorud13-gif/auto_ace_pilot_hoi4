@@ -1,0 +1,12 @@
+﻿l_korean:
+ ace_auto_assign_category: "공군 참모본부: 에이스 조종사 관리"
+ ace_auto_assign_category_desc: "비행단에 배치되지 않고 대기 중인 에이스 조종사들을 자동으로 관리하고 적절한 비행단에 배치합니다."
+ ace_assign_once: "에이스 즉시 자동 배치 (1회)"
+ ace_assign_once_desc: "현재 대기 풀에 있는 모든 에이스 조종사들을 기종에 맞는 빈 비행단에 즉시 자동 배치합니다."
+ ace_assign_once_tt: "§G대기 중인 에이스 조종사들이 빈 비행단으로 즉시 자동 배치됩니다.§!"
+ ace_assign_disable: "에이스 주기적 자동 배치 비활성화"
+ ace_assign_disable_desc: "시간 경과 시 3초마다 자동으로 에이스를 배치하는 주기적 자동 배치 기능을 중단합니다."
+ ace_assign_disable_tt: "§R시간 경과에 따른 3초 주기 자동 배치가 비활성화됩니다.§!\n(필요할 때 '에이스 즉시 자동 배치 (1회)' 결정으로 수동 배치할 수 있습니다.)"
+ ace_assign_enable: "에이스 주기적 자동 배치 활성화"
+ ace_assign_enable_desc: "시간 경과 시 3초마다 대기 에이스를 빈 비행단에 자동으로 채워 넣는 기능을 다시 작동시킵니다."
+ ace_assign_enable_tt: "§G시간 경과에 따른 3초 주기 자동 배치가 활성화됩니다.§!"

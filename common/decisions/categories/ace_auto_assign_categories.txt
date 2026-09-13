@@ -1,0 +1,8 @@
+ace_auto_assign_category = {
+	icon = generic_air
+	priority = 100
+
+	visible = {
+		is_ai = no
+	}
+}

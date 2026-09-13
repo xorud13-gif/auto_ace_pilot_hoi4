@@ -1,0 +1,12 @@
+﻿l_english:
+ ace_auto_assign_category: "Air Staff: Ace Pilot Management"
+ ace_auto_assign_category_desc: "Automatically manage reserve ace pilots and assign them to available air wings."
+ ace_assign_once: "Immediate Ace Auto-Assign (1-Time)"
+ ace_assign_once_desc: "Instantly auto-assigns all idle ace pilots in reserve to suitable air wings."
+ ace_assign_once_tt: "§GIdle ace pilots will be immediately assigned to available air wings.§!"
+ ace_assign_disable: "Disable Periodic Ace Auto-Assign"
+ ace_assign_disable_desc: "Stops the autonomous periodic background assignment of aces (3-second cycle)."
+ ace_assign_disable_tt: "§RAutonomous periodic ace assignment is now disabled.§!"
+ ace_assign_enable: "Enable Periodic Ace Auto-Assign"
+ ace_assign_enable_desc: "Re-enables the autonomous periodic assignment of aces as game time passes (3-second cycle)."
+ ace_assign_enable_tt: "§GAutonomous periodic ace assignment is now enabled.§!"
