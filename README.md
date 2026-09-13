@@ -7,9 +7,12 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Target: HoI4](https://img.shields.io/badge/Hearts%20of%20Iron%20IV-v1.19.2%2B-red.svg)](https://store.steampowered.com/app/394360/Hearts_of_Iron_IV/)
 [![Version: v2.3](https://img.shields.io/badge/Version-v2.3-green.svg)](https://github.com/xorud13-gif/auto_ace_pilot_hoi4/releases/tag/v2.3)
+[![Developed with: AI](https://img.shields.io/badge/Developed%20with-AI%20Assisted-blueviolet.svg)](#-개발-방식-및-크레딧)
 [![Language: C++ / PDX Script](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20PDX-orange.svg)](#)
 
 Hearts of Iron IV에서 공군을 대규모로 운용할 때, 수십~수백 개의 비행단에 에이스를 일일이 수동으로 배정해야 하는 번거로움을 완전히 해결해 주는 **C++ 네이티브 메모리 훅 & 인게임 결정 통합 모드**입니다.
+
+> 🤖 **AI 지원 개발 안내 (AI-Assisted Project)**: 본 프로젝트의 모든 구성 요소(클라우제비츠 엔진 바이너리 역분석, x64 어셈블리 훅, C++ DLL 프록시, 파이썬 진단 도구 및 인게임 스크립트)는 최신 AI 코딩 어시스턴트(Google DeepMind Antigravity / Claude)와의 페어 프로그래밍을 통해 분석, 설계 및 개발되었습니다.
 
 ---
 
@@ -117,10 +120,11 @@ python tools/patch_verifier.py
 
 ---
 
-## 📜 라이선스 (License)
+## 📜 개발 방식 및 크레딧 (License & Credits)
 
-This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
+본 프로젝트는 **GNU General Public License v3.0** 하에 배포됩니다 - 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
 * **Author**: [xorud13 (xorud13-gif)](https://github.com/xorud13-gif)
+* **Development Method**: AI 지원 페어 프로그래밍 (AI-Assisted Development with Google DeepMind Antigravity / Claude)
 * **Repository**: [auto_ace_pilot_hoi4](https://github.com/xorud13-gif/auto_ace_pilot_hoi4)
 * **Copyright**: (C) 2026 xorud13

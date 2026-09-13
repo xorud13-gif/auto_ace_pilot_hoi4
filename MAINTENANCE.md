@@ -86,3 +86,10 @@ H:\Coding\game\Hearts of Iron IV\
 ├── version.dll                 # 빌드된 최종 DLL (v2.3)
 └── MAINTENANCE.md              # 본 유지보수 설명서
 ```
+
+---
+
+## 4. 🤖 AI 개발 및 유지보수 안내
+
+본 프로젝트는 최신 AI 코딩 어시스턴트(Google DeepMind Antigravity / Claude)와의 페어 프로그래밍을 통해 개발되었습니다.  
+향후 대형 패치나 DLC로 인해 함수 구조가 대대적으로 변경되더라도, AI에게 `MAINTENANCE.md`와 `python tools/patch_verifier.py`의 출력 결과를 전달하시면 신속하게 새로운 시그니처와 오프셋을 역분석 및 재도출하여 모드를 즉시 갱신할 수 있습니다.

@@ -7,9 +7,12 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Target: HoI4](https://img.shields.io/badge/Hearts%20of%20Iron%20IV-v1.19.2%2B-red.svg)](https://store.steampowered.com/app/394360/Hearts_of_Iron_IV/)
 [![Version: v2.3](https://img.shields.io/badge/Version-v2.3-green.svg)](https://github.com/xorud13-gif/auto_ace_pilot_hoi4/releases/tag/v2.3)
+[![Developed with: AI](https://img.shields.io/badge/Developed%20with-AI%20Assisted-blueviolet.svg)](#-license--credits)
 [![Language: C++ / PDX Script](https://img.shields.io/badge/Language-C%2B%2B%20%7C%20PDX-orange.svg)](#)
 
 A native C++ memory hook and in-game decision integration mod for **Hearts of Iron IV** that completely eliminates the tedious micromanagement of manually assigning ace pilots across dozens or hundreds of air wings.
+
+> 🤖 **AI-Assisted Project**: All components of this project (Clausewitz engine binary reverse engineering, x64 assembly memory hooks, C++ DLL proxy, Python diagnostic tools, and Paradox in-game scripts) were analyzed, architected, and developed through pair programming with advanced AI coding assistants (Google DeepMind Antigravity / Claude).
 
 ---
 
@@ -117,10 +120,11 @@ python tools/patch_verifier.py
 
 ---
 
-## 📜 License
+## 📜 License & Credits
 
 This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
 
 * **Author**: [xorud13 (xorud13-gif)](https://github.com/xorud13-gif)
+* **Development Method**: AI-Assisted Pair Programming (Google DeepMind Antigravity / Claude)
 * **Repository**: [auto_ace_pilot_hoi4](https://github.com/xorud13-gif/auto_ace_pilot_hoi4)
 * **Copyright**: (C) 2026 xorud13
