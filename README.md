@@ -65,7 +65,7 @@ Hearts-of-Iron-IV-AceAutoAssigner/
 ## 🚀 설치 및 적용 방법
 
 ### 간편 자동 설치 (추천)
-1. 본 리포지토리를 다운로드합니다.
+1. **[ZIP 파일 즉시 다운로드 (클릭)](https://github.com/xorud13-gif/auto_ace_pilot_hoi4/archive/refs/heads/main.zip)** 또는 깃허브 우측 상단의 **`Code` ➔ `Download ZIP`**을 클릭하여 다운로드 후 압축을 풉니다.
 2. `deploy_to_steam.bat`을 더블클릭하여 실행합니다.
    * **스팀 폴더 자동 감지**: 윈도우 레지스트리를 조회하여 스팀 게임이 어느 드라이브(`C:`, `D:`, `H:` 등)에 설치되어 있든 **사용자의 Hearts of Iron IV 본편 폴더를 자동으로 찾아 배포**합니다.
    * (만약 자동 감지되지 않는 특수한 환경인 경우, 콘솔 창에 게임 폴더 경로를 입력하거나 폴더를 창으로 드래그 앤 드롭하시면 됩니다.)

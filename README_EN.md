@@ -65,7 +65,7 @@ Hearts-of-Iron-IV-AceAutoAssigner/
 ## 🚀 Installation & Setup
 
 ### Automated Installation (Recommended)
-1. Download or clone this repository.
+1. **[Direct Download ZIP Package (Click Here)](https://github.com/xorud13-gif/auto_ace_pilot_hoi4/archive/refs/heads/main.zip)** or click **`Code` ➔ `Download ZIP`** on the GitHub repository, then extract the downloaded ZIP.
 2. Double-click and run `deploy_to_steam.bat`.
    * **Auto-detection**: Automatically queries the Windows Registry (`Steam App ID: 394360`) to locate your Hearts of Iron IV directory regardless of which drive (`C:`, `D:`, `H:`, etc.) your Steam library is stored on.
    * (If auto-detection fails in custom/portable setups, you can simply type or drag-and-drop your game folder into the console window.)
