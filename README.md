@@ -1,3 +1,7 @@
+<p align="right">
+  <b>한국어</b> | <a href="README_EN.md">English</a>
+</p>
+
 # Hearts of Iron IV - Ace Auto Assigner (에이스 조종사 자동 배치 모드)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -52,7 +56,8 @@ Hearts-of-Iron-IV-AceAutoAssigner/
 ├── version.dll                 # 빌드 완료된 릴리즈 DLL (v2.1)
 ├── MAINTENANCE.md              # 패치 및 DLC 출시 대응 가이드
 ├── LICENSE                     # GNU General Public License v3.0
-└── README.md                   # 본 설명서
+├── README.md                   # 한국어 설명서
+└── README_EN.md                # 영문 설명서 (English)
 ```
 
 ---
