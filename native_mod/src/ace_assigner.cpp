@@ -10,7 +10,7 @@ namespace AceAssigner {
 
 typedef void(*PFN_AssignAces)(void* pAirManager);
 typedef void*(*PFN_Country_GetAirManager)(void* pCountry);
-typedef void*(*PFN_LogDispatcher)(void* pLogger, const void* pStr);
+typedef void(*PFN_EffectLog_Execute)(void* pEffectLog, void* pContext);
 
 static PFN_AssignAces fnAssignAces = nullptr;
 static X64Hook g_hookGetAirManager;
@@ -149,12 +149,17 @@ static DWORD WINAPI PeriodicWorker(LPVOID) {
     return 0;
 }
 
-// Hook for LogDispatcher (central logger in hoi4.exe at RVA 0x24ACF90)
+// Hook for CEffectLog::Execute (Clausewitz script "log" effect execution at RVA 0x137ED90)
 // Catches log effects triggered from Decisions, On-Actions & Events on the MAIN GAME THREAD
-static void* Hooked_LogDispatcher(void* pLogger, const void* pStr) {
-    if (pStr) {
+static void Hooked_LogDispatcher(void* pEffectLog, void* pContext) {
+    if (pEffectLog) {
+        // In CEffectLog, the log string is stored at offset +0x58
+        const void* pStr = reinterpret_cast<const void*>(reinterpret_cast<uintptr_t>(pEffectLog) + 0x58);
         const char* pText = GetMsvcString(pStr);
         if (pText) {
+            if (strstr(pText, "ACE_AUTO_ASSIGN")) {
+                Log("[SCRIPT_LOG] Received script command: %s", pText);
+            }
             if (strstr(pText, "ACE_AUTO_ASSIGN:TRIGGER")) {
                 Log("[DECISION] 'Immediate Ace Auto-Assign (1-Time)' clicked!");
                 TriggerAutoAssign(true);
@@ -179,26 +184,19 @@ static void* Hooked_LogDispatcher(void* pLogger, const void* pStr) {
                 } else {
                     Log("[EVENT] Ace promoted, but auto-assign is disabled. Skipping assignment.");
                 }
-            } else if (strstr(pText, "Resetting game") || strstr(pText, "Launching SINGLEPLAYER")) {
-                EnterCriticalSection(&g_csList);
-                g_airManagerCount = 0;
-                g_pLastAirManager = nullptr;
-                LeaveCriticalSection(&g_csList);
-                g_bPeriodicEnabled.store(true);
-                Log("[SESSION] Game reset detected. Cached AirManagers refreshed. Periodic state: ON");
             }
         }
     }
 
-    auto orig = g_hookLogDispatcher.GetOriginal<PFN_LogDispatcher>();
-    return orig(pLogger, pStr);
+    auto orig = g_hookLogDispatcher.GetOriginal<PFN_EffectLog_Execute>();
+    orig(pEffectLog, pContext);
 }
 
 bool Initialize() {
     InitializeCriticalSection(&g_csList);
 
     Log("=================================================");
-    Log("Hearts of Iron IV AceAutoAssigner Native Mod v2.2");
+    Log("Hearts of Iron IV AceAutoAssigner Native Mod v2.3");
     Log("Features: In-Game Decisions (Enable/Disable/Once) + Combat Death Replace + Background Cycle");
     Log("Initial State: Periodic Auto-Assign ON (3s cycle)");
     Log("Target version: %s", Signatures::TARGET_GAME_VERSION);
@@ -249,7 +247,7 @@ bool Initialize() {
     g_bRunning = true;
     g_hWorkerThread = CreateThread(NULL, 0, PeriodicWorker, NULL, 0, NULL);
 
-    Log("AceAutoAssigner v2.2 ready! Periodic worker active & Decisions bridge online.");
+    Log("AceAutoAssigner v2.3 ready! Periodic worker active & Decisions bridge online.");
     return true;
 }
 

@@ -26,13 +26,13 @@ namespace Signatures {
     constexpr uintptr_t RVA_GET_AIR_MANAGER = 0x02A8CF0;
     constexpr size_t HOOK_SIZE_GET_AIR_MANAGER = 16;
 
-    // 3. LogDispatcher: Intercepts script log effects on the main game thread
-    // mov [rsp+18h], rbx; mov [rsp+20h], rsi; push rdi; sub rsp, 90h; mov rsi, rdx; mov rdi, rcx
+    // 3. EffectLog_Execute: Directly intercepts the Clausewitz script "log" effect
+    // mov [rsp+10h], rbx; mov [rsp+18h], rsi; push rbp; push rdi; push r14; lea rbp, ...
     constexpr const char* PAT_LOG_DISPATCHER = 
-        "\x48\x89\x5C\x24\x18\x48\x89\x74\x24\x20\x57\x48\x81\xEC\x90\x00\x00\x00\x48\x8B\xF2\x48\x8B\xF9";
-    constexpr const char* MASK_LOG_DISPATCHER = "xxxxxxxxxxxxxxxxxxxxxxxx";
-    constexpr uintptr_t RVA_LOG_DISPATCHER = 0x24ACF90;
-    constexpr size_t HOOK_SIZE_LOG_DISPATCHER = 18;
+        "\x48\x89\x5C\x24\x10\x48\x89\x74\x24\x18\x55\x57\x41\x56\x48\x8D\xAC\x24\x50\xFF\xFF\xFF\x48\x81\xEC\xB0\x01\x00\x00\x4C\x8B\xF2\x48\x8D\x51\x58";
+    constexpr const char* MASK_LOG_DISPATCHER = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    constexpr uintptr_t RVA_LOG_DISPATCHER = 0x137ED90;
+    constexpr size_t HOOK_SIZE_LOG_DISPATCHER = 14;
 
     // 4. Struct Offsets
     // CAirManager offset for count of unassigned reserve aces (int32)

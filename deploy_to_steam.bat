@@ -10,35 +10,31 @@ echo =========================================================
 set "STEAM_DIR="
 
 :: 1. 윈도우 레지스트리에서 스팀 HoI4 설치 경로 자동 검색 (Steam App ID: 394360)
-for /f "tokens=2*" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 394360" /v InstallLocation 2^>nul ^| find "InstallLocation"') do (
-    set "STEAM_DIR=%%b"
+for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 394360' -ErrorAction SilentlyContinue).InstallLocation"` ) do (
+    if exist "%%i\hoi4.exe" set "STEAM_DIR=%%i"
 )
 
 :: 2. 64비트 WOW6432Node 레지스트리 보조 검색
-if not defined STEAM_DIR (
-    for /f "tokens=2*" %%a in ('reg query "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 394360" /v InstallLocation 2^>nul ^| find "InstallLocation"') do (
-        set "STEAM_DIR=%%b"
+if "!STEAM_DIR!"=="" (
+    for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "(Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 394360' -ErrorAction SilentlyContinue).InstallLocation"` ) do (
+        if exist "%%i\hoi4.exe" set "STEAM_DIR=%%i"
     )
 )
 
-:: 3. 기본 스팀 경로 후보 확인
-if not defined STEAM_DIR (
-    if exist "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\hoi4.exe" (
-        set "STEAM_DIR=C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
-    ) else if exist "C:\Steam\steamapps\common\Hearts of Iron IV\hoi4.exe" (
-        set "STEAM_DIR=C:\Steam\steamapps\common\Hearts of Iron IV"
-    ) else if exist "D:\Steam\steamapps\common\Hearts of Iron IV\hoi4.exe" (
-        set "STEAM_DIR=D:\Steam\steamapps\common\Hearts of Iron IV"
-    ) else if exist "D:\SteamLibrary\steamapps\common\Hearts of Iron IV\hoi4.exe" (
-        set "STEAM_DIR=D:\SteamLibrary\steamapps\common\Hearts of Iron IV"
+:: 3. 기본 스팀 드라이브별 경로 후보 자동 탐색
+if "!STEAM_DIR!"=="" (
+    for %%d in (C D E F G H) do (
+        if "!STEAM_DIR!"=="" if exist "%%d:\Steam\steamapps\common\Hearts of Iron IV\hoi4.exe" set "STEAM_DIR=%%d:\Steam\steamapps\common\Hearts of Iron IV"
+        if "!STEAM_DIR!"=="" if exist "%%d:\SteamLibrary\steamapps\common\Hearts of Iron IV\hoi4.exe" set "STEAM_DIR=%%d:\SteamLibrary\steamapps\common\Hearts of Iron IV"
+        if "!STEAM_DIR!"=="" if exist "%%d:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\hoi4.exe" set "STEAM_DIR=%%d:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
     )
 )
 
 :: 4. 자동 감지 검증 및 수동 입력 폴백
-if not defined STEAM_DIR (
+if "!STEAM_DIR!"=="" (
     echo [안내] 스팀 본편 폴더를 자동으로 감지하지 못했습니다.
     echo Hearts of Iron IV가 설치된 폴더 경로를 입력해 주세요.
-    echo (폴더를 이 콘솔 창에 드래그 앤 드롭하셔도 됩니다.)
+    echo - 탐색기에서 폴더를 이 콘솔 창에 드래그 앤 드롭하셔도 됩니다.
     echo.
     set /p "STEAM_DIR=설치 폴더 경로 입력: "
     if defined STEAM_DIR set "STEAM_DIR=!STEAM_DIR:"=!"
@@ -53,7 +49,8 @@ if not exist "!STEAM_DIR!\hoi4.exe" (
     exit /b 1
 )
 
-echo [안내] 스팀 설치 폴더: !STEAM_DIR!
+echo [안내] 스팀 설치 폴더가 자동으로 감지되었습니다:
+echo        !STEAM_DIR!
 echo.
 
 echo [1/3] version.dll 배포 중...
@@ -80,7 +77,7 @@ copy /y "%~dp0localisation\korean\ace_auto_assign_l_korean.yml" "!STEAM_DIR!\loc
 copy /y "%~dp0localisation\english\ace_auto_assign_l_english.yml" "!STEAM_DIR!\localisation\english\" > nul
 
 echo =========================================================
-echo [성공] AceAutoAssigner v2.2 파일이 스팀 폴더로 안전하게 배포되었습니다!
+echo [성공] AceAutoAssigner v2.3 파일이 스팀 폴더로 안전하게 배포되었습니다!
 echo 스팀에서 바로 게임을 실행하시면 최신 모드가 적용됩니다.
 echo =========================================================
 pause
