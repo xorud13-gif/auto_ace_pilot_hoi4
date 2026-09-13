@@ -27,10 +27,11 @@ namespace Signatures {
     constexpr size_t HOOK_SIZE_GET_AIR_MANAGER = 16;
 
     // 3. LogDispatcher: Intercepts script log effects on the main game thread
+    // mov [rsp+18h], rbx; mov [rsp+20h], rsi; push rdi; sub rsp, 90h; mov rsi, rdx; mov rdi, rcx
     constexpr const char* PAT_LOG_DISPATCHER = 
-        "\x48\x89\x5C\x24\x10\x48\x89\x74\x24\x20\x57\x48\x81\xEC\x90\x00\x00\x00";
-    constexpr const char* MASK_LOG_DISPATCHER = "xxxxxxxxxxxxxxxxxx";
-    constexpr uintptr_t RVA_LOG_DISPATCHER = 0x24ACD40;
+        "\x48\x89\x5C\x24\x18\x48\x89\x74\x24\x20\x57\x48\x81\xEC\x90\x00\x00\x00\x48\x8B\xF2\x48\x8B\xF9";
+    constexpr const char* MASK_LOG_DISPATCHER = "xxxxxxxxxxxxxxxxxxxxxxxx";
+    constexpr uintptr_t RVA_LOG_DISPATCHER = 0x24ACF90;
     constexpr size_t HOOK_SIZE_LOG_DISPATCHER = 18;
 
     // 4. Struct Offsets

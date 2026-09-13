@@ -64,15 +64,14 @@ on_actions = {
 		}
 	}
 
-	# 6. 매일 자정 메인 스레드 펄스 (시간 진행 중 매일 1회 정기 검사 및 자동 배치)
-	on_daily = {
+	# 6. 세이브 로드 / 게임 시작 시 비활성화 플래그 동기화
+	on_startup = {
 		effect = {
 			if = {
 				limit = {
-					is_ai = no
-					NOT = { has_country_flag = ace_auto_assign_disabled }
+					has_country_flag = ace_auto_assign_disabled
 				}
-				log = "ACE_AUTO_ASSIGN:DAILY"
+				log = "ACE_AUTO_ASSIGN:DISABLE"
 			}
 		}
 	}

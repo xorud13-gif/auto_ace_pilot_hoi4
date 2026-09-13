@@ -7,7 +7,9 @@ echo Compiling AceAutoAssigner (version.dll) with Zig C++...
     proxy.def -lpsapi
 
 if %ERRORLEVEL% equ 0 (
-    echo [SUCCESS] version.dll built successfully in Hearts of Iron IV directory!
+    copy /y ..\version.dll ..\..\version.dll > nul
+    del ..\version.dll
+    echo [SUCCESS] version.dll built successfully in Hearts of Iron IV root directory!
 ) else (
     echo [ERROR] Build failed with error code %ERRORLEVEL%
 )

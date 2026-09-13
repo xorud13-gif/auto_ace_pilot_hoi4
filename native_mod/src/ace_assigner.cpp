@@ -130,7 +130,26 @@ static void* Hooked_Country_GetAirManager(void* pCountry) {
     return pAirMgr;
 }
 
-// Hook for LogDispatcher (central logger in hoi4.exe)
+// Background timer worker (Checks every 3s as time passes when enabled)
+static std::atomic<bool> g_bRunning(true);
+static HANDLE g_hWorkerThread = nullptr;
+
+static DWORD WINAPI PeriodicWorker(LPVOID) {
+    Log("Periodic background worker active (Checks every 3s when enabled).");
+
+    while (g_bRunning) {
+        Sleep(3000);
+
+        if (g_bPeriodicEnabled.load()) {
+            TriggerAutoAssign(false);
+        }
+    }
+
+    Log("Worker thread exiting.");
+    return 0;
+}
+
+// Hook for LogDispatcher (central logger in hoi4.exe at RVA 0x24ACF90)
 // Catches log effects triggered from Decisions, On-Actions & Events on the MAIN GAME THREAD
 static void* Hooked_LogDispatcher(void* pLogger, const void* pStr) {
     if (pStr) {
@@ -139,14 +158,6 @@ static void* Hooked_LogDispatcher(void* pLogger, const void* pStr) {
             if (strstr(pText, "ACE_AUTO_ASSIGN:TRIGGER")) {
                 Log("[DECISION] 'Immediate Ace Auto-Assign (1-Time)' clicked!");
                 TriggerAutoAssign(true);
-            } else if (strstr(pText, "ACE_AUTO_ASSIGN:ACE_DIED")) {
-                Log("[EVENT] Ace pilot died in combat/accident! Automatically replacing from reserve pool...");
-                TriggerAutoAssign(false);
-            } else if (strstr(pText, "ACE_AUTO_ASSIGN:PROMOTED")) {
-                Log("[EVENT] New Ace pilot promoted! Automatically assigning to vacant wing...");
-                TriggerAutoAssign(false);
-            } else if (strstr(pText, "ACE_AUTO_ASSIGN:DAILY")) {
-                TriggerAutoAssign(false);
             } else if (strstr(pText, "ACE_AUTO_ASSIGN:DISABLE")) {
                 Log("[DECISION] 'Disable Periodic Ace Auto-Assign' clicked! Auto-assignment paused.");
                 g_bPeriodicEnabled.store(false);
@@ -154,12 +165,27 @@ static void* Hooked_LogDispatcher(void* pLogger, const void* pStr) {
                 Log("[DECISION] 'Enable Periodic Ace Auto-Assign' clicked! Auto-assignment resumed.");
                 g_bPeriodicEnabled.store(true);
                 TriggerAutoAssign(false);
+            } else if (strstr(pText, "ACE_AUTO_ASSIGN:ACE_DIED")) {
+                if (g_bPeriodicEnabled.load()) {
+                    Log("[EVENT] Ace pilot died in combat/accident! Replacing from reserve pool...");
+                    TriggerAutoAssign(false);
+                } else {
+                    Log("[EVENT] Ace died, but auto-assign is disabled. Skipping replacement.");
+                }
+            } else if (strstr(pText, "ACE_AUTO_ASSIGN:PROMOTED")) {
+                if (g_bPeriodicEnabled.load()) {
+                    Log("[EVENT] New Ace pilot promoted! Assigning to vacant wing...");
+                    TriggerAutoAssign(false);
+                } else {
+                    Log("[EVENT] Ace promoted, but auto-assign is disabled. Skipping assignment.");
+                }
             } else if (strstr(pText, "Resetting game") || strstr(pText, "Launching SINGLEPLAYER")) {
                 EnterCriticalSection(&g_csList);
                 g_airManagerCount = 0;
                 g_pLastAirManager = nullptr;
                 LeaveCriticalSection(&g_csList);
-                Log("[SESSION] Game reset detected. Cached AirManagers refreshed.");
+                g_bPeriodicEnabled.store(true);
+                Log("[SESSION] Game reset detected. Cached AirManagers refreshed. Periodic state: ON");
             }
         }
     }
@@ -172,10 +198,9 @@ bool Initialize() {
     InitializeCriticalSection(&g_csList);
 
     Log("=================================================");
-    Log("Hearts of Iron IV AceAutoAssigner Native Mod v2.1");
-    Log("Features: Instant Death Replacement + Promotion Auto-Assign + Daily Main-Thread Pulse");
-    Log("In-Game Decisions Mode: Controlled via Decisions & Events!");
-    Log("Default State: Periodic Auto-Assign ON (Main Thread Synchronous)");
+    Log("Hearts of Iron IV AceAutoAssigner Native Mod v2.2");
+    Log("Features: In-Game Decisions (Enable/Disable/Once) + Combat Death Replace + Background Cycle");
+    Log("Initial State: Periodic Auto-Assign ON (3s cycle)");
     Log("Target version: %s", Signatures::TARGET_GAME_VERSION);
     Log("=================================================");
 
@@ -220,12 +245,23 @@ bool Initialize() {
         Log("WARNING: Failed to hook LogDispatcher.");
     }
 
-    Log("AceAutoAssigner v2.1 ready! Main-thread auto-replace & daily pulse active.");
+    // 5. Start background periodic worker thread
+    g_bRunning = true;
+    g_hWorkerThread = CreateThread(NULL, 0, PeriodicWorker, NULL, 0, NULL);
+
+    Log("AceAutoAssigner v2.2 ready! Periodic worker active & Decisions bridge online.");
     return true;
 }
 
 void Shutdown() {
     Log("Shutting down AceAutoAssigner...");
+    g_bRunning = false;
+    if (g_hWorkerThread) {
+        WaitForSingleObject(g_hWorkerThread, 3500);
+        CloseHandle(g_hWorkerThread);
+        g_hWorkerThread = nullptr;
+    }
+
     g_hookGetAirManager.Unhook();
     g_hookLogDispatcher.Unhook();
     DeleteCriticalSection(&g_csList);

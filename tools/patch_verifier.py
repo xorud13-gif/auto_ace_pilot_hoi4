@@ -89,9 +89,9 @@ SIGNATURES = {
         "check_offset": False
     },
     "LogDispatcher": {
-        "pattern": b"\x48\x89\x5C\x24\x10\x48\x89\x74\x24\x20\x57\x48\x81\xEC\x90\x00\x00\x00",
-        "mask":    "xxxxxxxxxxxxxxxxxx",
-        "expected_rva": 0x24ACD40,
+        "pattern": b"\x48\x89\x5C\x24\x18\x48\x89\x74\x24\x20\x57\x48\x81\xEC\x90\x00\x00\x00\x48\x8B\xF2\x48\x8B\xF9",
+        "mask":    "xxxxxxxxxxxxxxxxxxxxxxxx",
+        "expected_rva": 0x24ACF90,
         "check_offset": False
     }
 }
